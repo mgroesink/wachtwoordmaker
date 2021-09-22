@@ -6,8 +6,19 @@ function getRandomLetter () {
     }
     return letter
 }
+function shuffleText (originalText: string) {
+    tempText = originalText
+    shuffledText = ""
+    while (tempText.length > 0) {
+        position = randint(0, tempText.length - 1)
+        shuffledText = "" + shuffledText + tempText.charAt(position)
+        tempText = "" + tempText.substr(0, position) + tempText.substr(position + 1, tempText.length - position)
+    }
+    return shuffledText
+}
 input.onButtonPressed(Button.A, function () {
     numberOfLetters += 1
+    basic.showString("" + (numberOfLetters))
 })
 input.onGesture(Gesture.Shake, function () {
 	
@@ -20,19 +31,19 @@ function getRandomPassowrd (numberOfDigits: number, numberOfLetters: number) {
     for (let index2 = 0; index2 <= numberOfLetters - 1; index2++) {
         password = "" + password + getRandomLetter()
     }
-    return password
+    return shuffleText(password)
 }
 input.onButtonPressed(Button.AB, function () {
     if (numberOfDigits < 2 || numberOfLetters < 4 || numberOfDigits + numberOfLetters < 8) {
         basic.showIcon(IconNames.Sad)
         music.playTone(131, music.beat(BeatFraction.Breve))
     } else {
-        randomPassword = getRandomPassowrd(numberOfDigits, numberOfLetters)
+        basic.showString("" + (getRandomPassowrd(numberOfDigits, numberOfLetters)))
     }
-    basic.showString("" + (randomPassword))
 })
 input.onButtonPressed(Button.B, function () {
     numberOfDigits += 1
+    basic.showString("" + (numberOfDigits))
 })
 function stringToArray (text: string) {
     textArray = []
@@ -41,6 +52,10 @@ function stringToArray (text: string) {
     }
     return textArray
 }
+function reset () {
+    numberOfLetters = 0
+    numberOfDigits = 0
+}
 function arrayToString (textArray: any[]) {
     result = ""
     for (let waarde of textArray) {
@@ -48,27 +63,13 @@ function arrayToString (textArray: any[]) {
     }
     return result
 }
-let result: string[][][][][][][][] = []
-let textArray: string[][][][][][][][][] = []
-let randomPassword: string[][][][][][][][] = []
-let password: string[][][][][][][][] = []
-let letter: string[][][][][][][][] = []
-let numberOfLetters = 0
+let result = ""
+let textArray: string[] = []
 let numberOfDigits = 0
-let shuffledPassword = ""
-let tekstlijst: any[] = []
+let password = ""
+let numberOfLetters = 0
 let position = 0
-let lijst: string[] = []
-let resultaat = ""
-function shuffleText (originalText: any[]) {
-    shuffledPassword = ""
-    tekstlijst = originalText
-    while (tekstlijst.length > 0) {
-        position = randint(0, tekstlijst.length - 1)
-        shuffledPassword = "" + shuffledPassword + tekstlijst[position]
-        tekstlijst.removeAt(position)
-    }
-    return shuffledPassword
-}
-numberOfDigits = 0
-numberOfLetters = 0
+let shuffledText = ""
+let tempText = ""
+let letter = ""
+reset()
